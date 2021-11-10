@@ -62,12 +62,16 @@ function checkResult(msg) {
 async function addReaction(msg, userId) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
+  if (_recruits[msg.id] == undefined) return;
   let membersList = _recruits[msg.id].members;
-  membersList.push(userId);
+  if (!membersList.includes(userId)) {
+    membersList.push(userId);
+  }
 
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
+  newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
 
   if (membersList.length == RECRUIT_NUM) {
     _recruits[msg.id] = {
@@ -100,6 +104,7 @@ async function addReaction(msg, userId) {
 function removeReaction(msg, userId) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
+  if (_recruits[msg.id] == undefined) return;
   let membersList = _recruits[msg.id].members;
 
   let idx = membersList.indexOf(userId);
@@ -114,9 +119,11 @@ function removeReaction(msg, userId) {
 
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
-  let newEmbed = new MessageEmbed(receivedEmbed).setDescription(
+  let newEmbed = new MessageEmbed(receivedEmbed);
+  newEmbed.setDescription(
     `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members)
   );
+  newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
 
   let data = JSON.stringify(_recruits, null, 2);
   fs.writeFileSync(JSON_PATH, data);
