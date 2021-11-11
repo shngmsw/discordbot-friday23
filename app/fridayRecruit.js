@@ -43,10 +43,11 @@ function createRecruit(msg) {
 function checkResult(msg) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
-  let today = formatDate(new Date() + 1);
+  let today = new Date();
+  let tommorow = formatDate(today.getDate() + 1);
   for (let recruit in _recruits) {
     let data = _recruits[recruit];
-    let openRecruit = data["isClose"] == false && data["date"] == today;
+    let openRecruit = data["isClose"] == false && data["date"] == tommorow;
 
     let notificationChannel = msg.guild.channels.cache.find(
       channel => channel.id === process.env.CHANNEL_ID_NOTIFICATION
