@@ -56,6 +56,10 @@ function checkResult(msg) {
       notificationChannel.send({
         content: `@everyone ${data["date"]}のプラベ、まだ人数足りてないです😭😭😭`
       });
+    } else if (openRecruit && data["members"].length == RECRUIT_NUM) {
+      notificationChannel.send({
+        content: `@everyone ${data["date"]}のプラベ、人数集まりましたので開催します！`
+      });
     }
   }
 }
