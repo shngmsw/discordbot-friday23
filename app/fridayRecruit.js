@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { fridaysIntl } = require("./fridaysIntl.js");
+const { fridaysIntl, getWeekOfDay } = require("./fridaysIntl.js");
 const e = require("express");
 const RECRUIT_NUM = process.env.MAX_MEMBER_NUM || 9;
 const fs = require("fs");
@@ -20,7 +20,8 @@ function createRecruit(msg) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
   let today = new Date();
-  let fridays = getAllFridays(today);
+  let firstFriday = getWeekOfDay(today.getFullYear(), today.getMonth() + 1, 1, 5)
+  let fridays = getAllFridays(firstFriday);
   let newEmbed = new MessageEmbed(INIT_EMBED);
 
   msg.channel.send({ content: "@everyone 今月のプラベ予定です。" });
@@ -151,14 +152,14 @@ function getMemberMentions(members) {
   return mentionString;
 }
 
-const getAllFridays = today => {
-  const beginDate = getFirstDayoftheMonth(today);
-  const endDate = getLastDayoftheMonth(today);
+const getAllFridays = firstFriday => {
+  const beginDate = getFirstDayoftheMonth(firstFriday);
+  const endDate = getLastDayoftheMonth(firstFriday);
   let fridaysCount = fridaysIntl(beginDate, endDate);
   let fridayList = [];
   for (let i = 0; i < fridaysCount; i++) {
     fridayList.push(
-      new Date(today.getFullYear(), today.getMonth(), today.getDate() + i * 7)
+      new Date(firstFriday.getFullYear(), firstFriday.getMonth(), firstFriday.getDate() + i * 7)
     );
   }
   return fridayList;
@@ -169,5 +170,5 @@ const getFirstDayoftheMonth = today => {
 };
 
 const getLastDayoftheMonth = today => {
-  return new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  return new Date(today.getFullYear(), today.getMonth() + 1, 0, 1);
 };

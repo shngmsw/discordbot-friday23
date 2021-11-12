@@ -1,5 +1,6 @@
 module.exports = {
-  fridaysIntl
+  fridaysIntl,
+  getWeekOfDay
 };
 
 function fridaysIntl(beginDate, endDate) {
@@ -34,4 +35,32 @@ function fridaysIntl(beginDate, endDate) {
     }
   }
   return dayOffs;
+}
+
+/**
+ * year		int		求めたい日付の年を指定
+ * month	int		求めたい日付の月を指定
+ * week		int		第n週か。第1週なら1、第3週なら3を指定
+ * day		int		求めたい曜日。0〜6までの数字で指定
+ */
+function getWeekOfDay(year, month, week, day) {
+  // 1・指定した年月の最初の曜日を取得
+  var date = new Date(year + "/" + month + "/1");
+  var firstDay = date.getDay();
+
+  // 2・求めたい曜日の第1週の日付けを計算する
+  var day = day - firstDay + 1;
+  if (day <= 0) day += 7;
+
+  // 3・n週まで1週間を足す
+  day += 7 * (week - 1);
+
+  // 4・結果
+  result = new Date(year + "/" + month + "/" + day);
+
+  var Y = parseInt(result.getFullYear());
+  var m = parseInt(result.getMonth());
+  var d = parseInt(result.getDate());
+
+  return new Date(Y, m, d);
 }
