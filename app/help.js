@@ -12,6 +12,7 @@ module.exports = function handleHelp(msg) {
     .addField("ブキ種別ごとのランダム選出方法を表示", "```buki help```")
     .addField("Choose a weapon randomly", "```weapon```")
     .addField("Choose a weapon randomly help", "```weapon help```")
+    .addField("選択肢の中からランダム抽出", "```pick 複数選出の場合は数字を記入 選択肢を半スペ空け or 改行して記入```")
     .addField("接続してるボイチャから数字分のヒトをランダム抽出", "```vpick 複数選出の場合は数字を記入```")
     .addField("プラベの観戦者を抽出", "```kansen 試合回数分の数字を記入```");
   msg.channel.send({ embeds: [embed] });
