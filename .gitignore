@@ -2,3 +2,5 @@ node_modules/*
 launch.json
 .env
 local/*
+functions/*/node_modules/*
+*.service
