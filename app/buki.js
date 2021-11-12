@@ -98,12 +98,12 @@ function buki(msg) {
           var length = bukiNames.length;
           for (let i = 0; i < amount; i++) {
             msg.channel.send({
-              embeds: new MessageEmbed(bukiNames[Math.floor(Math.random() * length)])
+              embeds: [new MessageEmbed(bukiNames[Math.floor(Math.random() * length)])]
             });
           }
         } else {
           var buki = common.random(bukiNames, 1)[0];
-          msg.channel.send({ embeds: buki });
+          msg.channel.send({ embeds: [buki] });
         }
       } else {
         msg.channel.send({ content: "なんかエラーでてるわ" });
@@ -177,12 +177,12 @@ function weapon(msg) {
           var length = bukiNames.length;
           for (let i = 0; i < amount; i++) {
             msg.channel.send({
-              embeds: bukiNames[Math.floor(Math.random() * length)]
+              embeds: [bukiNames[Math.floor(Math.random() * length)]]
             });
           }
         } else {
           var buki = common.random(bukiNames, 1)[0];
-          msg.channel.send({ embeds: buki });
+          msg.channel.send({ embeds: [buki] });
         }
       } else {
         msg.channel.send({ content: "なんかエラーでてるわ" });
