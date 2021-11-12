@@ -52,7 +52,7 @@ function buki(msg) {
       "ブキを種類縛りでランダムに選びます\n```\nbuki 種類(" +
       Object.keys(bukiTypes).join(`・`) +
       ")\n例: buki シューター```\n";
-    msg.channel.send(txt);
+    msg.channel.send({ content: txt });
   } else {
     if (bukiTypes[args[0]]) {
       // e.g. buki シューター
@@ -61,10 +61,6 @@ function buki(msg) {
     } else {
       // e.g. buki 8
       amount = Number(args[0]);
-    }
-    // ブキサブスペクイズ判定
-    if (args[0] === "quiz") {
-      isQuiz = true;
     }
     request.get(weaponsUrl, function(error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -101,18 +97,16 @@ function buki(msg) {
           // var buki = random(size, amount).join('\n');
           var length = bukiNames.length;
           for (let i = 0; i < amount; i++) {
-            msg.channel.send(bukiNames[Math.floor(Math.random() * length)]);
+            msg.channel.send({
+              embeds: bukiNames[Math.floor(Math.random() * length)]
+            });
           }
-        } else if (isQuiz) {
-          // var buki = random(bukiNames, 1)[0];
-          // console.log(amount);
-          // msg.reply(buki.replace('(', '(||').replace(')', '||)'));
         } else {
           var buki = common.random(bukiNames, 1)[0];
-          msg.channel.send(buki);
+          msg.channel.send({ embeds: buki });
         }
       } else {
-        msg.channel.send("なんかエラーでてるわ");
+        msg.channel.send({ content: "なんかエラーでてるわ" });
       }
     });
   }
@@ -134,7 +128,7 @@ function weapon(msg) {
       "Specify a type and choose at random\n```\nweapon type(" +
       Object.values(weaponTypes).join(`・`) +
       ")\ne.g. weapon shooter```\n";
-    msg.channel.send(txt);
+    msg.channel.send({ content: txt });
   } else {
     if (weaponTypes[args[0]]) {
       // e.g. buki シューター
@@ -145,12 +139,8 @@ function weapon(msg) {
       amount = Number(args[0]);
       if (amount > 10) {
         amount = 10;
-        msg.channel.send("Up to 10 items can be output at a time");
+        msg.channel.send({ content: "Up to 10 items can be output at a time" });
       }
-    }
-    // ブキサブスペクイズ判定
-    if (args[0] === "quiz") {
-      isQuiz = true;
     }
     request.get(weaponsUrl, function(error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -186,18 +176,16 @@ function weapon(msg) {
           // var buki = random(size, amount).join('\n');
           var length = bukiNames.length;
           for (let i = 0; i < amount; i++) {
-            msg.channel.send(bukiNames[Math.floor(Math.random() * length)]);
+            msg.channel.send({
+              embeds: bukiNames[Math.floor(Math.random() * length)]
+            });
           }
-        } else if (isQuiz) {
-          // var buki = random(bukiNames, 1)[0];
-          // console.log(amount);
-          // msg.reply(buki.replace('(', '(||').replace(')', '||)'));
         } else {
           var buki = common.random(bukiNames, 1)[0];
-          msg.channel.send(buki);
+          msg.channel.send({ embeds: buki });
         }
       } else {
-        msg.channel.send("なんかエラーでてるわ");
+        msg.channel.send({ content: "なんかエラーでてるわ" });
       }
     });
   }

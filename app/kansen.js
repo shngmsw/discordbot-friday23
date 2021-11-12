@@ -72,7 +72,7 @@ module.exports = async function handleKansen(msg, args) {
       fields: [{ name: "観戦の人", value: resultList.join("\n") }]
     }
   };
-  var pin_msg = await msg.channel.send(emb);
+  var pin_msg = await msg.channel.send({ embeds: emb });
   pin_msg.pin();
   var count = how_many_times * 8;
   if (count > 0) {

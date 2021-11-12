@@ -22,7 +22,6 @@ client.on("messageCreate", async msg => {
         }
       });
     }
-    return;
   }
   Handler.call(msg);
 });

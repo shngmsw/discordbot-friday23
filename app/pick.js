@@ -13,5 +13,5 @@ module.exports = function handlePick(msg) {
   } else {
     var picked = args[Math.floor(Math.random() * args.length)];
   }
-  msg.channel.send(picked + "！");
+  msg.channel.send({ content: picked + "！" });
 };
