@@ -1,7 +1,6 @@
 const handleBuki = require("./buki.js");
 const handleHelp = require("./help.js");
 const handlePick = require("./pick.js");
-const handleKansen = require("./kansen.js");
 const handleVoicePick = require("./vpick.js");
 
 module.exports = {
@@ -23,9 +22,6 @@ function call(msg) {
     case "buki":
     case "weapon":
       handleBuki(command, msg);
-      break;
-    case "kansen":
-      handleKansen(msg, args[0]);
       break;
     case "help":
       handleHelp(msg);
