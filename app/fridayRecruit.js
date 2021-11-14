@@ -20,7 +20,12 @@ function createRecruit(msg) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
   let today = new Date();
-  let firstFriday = getWeekOfDay(today.getFullYear(), today.getMonth() + 1, 1, 5)
+  let firstFriday = getWeekOfDay(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    1,
+    5
+  );
   let fridays = getAllFridays(firstFriday);
   let newEmbed = new MessageEmbed(INIT_EMBED);
 
@@ -88,8 +93,11 @@ async function addReaction(msg, userId) {
     newEmbed.setDescription(
       `23:00～ 〆` + getMemberMentions(_recruits[msg.id].members)
     );
+    notificationChannel.send({
+      content: `@everyone ${_recruits[msg.id].date}のプラベ、人数集まりましたので開催します！`
+    });
   } else if (membersList.length > RECRUIT_NUM) {
-    // 10人目は何もしない
+    // 10人目以降は何もしない
     return;
   } else {
     _recruits[msg.id] = {
@@ -159,7 +167,11 @@ const getAllFridays = firstFriday => {
   let fridayList = [];
   for (let i = 0; i < fridaysCount; i++) {
     fridayList.push(
-      new Date(firstFriday.getFullYear(), firstFriday.getMonth(), firstFriday.getDate() + i * 7)
+      new Date(
+        firstFriday.getFullYear(),
+        firstFriday.getMonth(),
+        firstFriday.getDate() + i * 7
+      )
     );
   }
   return fridayList;
