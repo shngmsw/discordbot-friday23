@@ -4,3 +4,4 @@ launch.json
 local/*
 functions/*/node_modules/*
 *.service
+data/recruit.json
