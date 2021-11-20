@@ -79,6 +79,9 @@ async function addReaction(msg, userId) {
     membersList.push(userId);
   }
 
+  let notificationChannel = msg.guild.channels.cache.find(
+    channel => channel.id === process.env.CHANNEL_ID_NOTIFICATION
+  );
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
