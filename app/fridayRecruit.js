@@ -49,8 +49,9 @@ function createRecruit(msg) {
 function checkResult(msg) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
-  let today = new Date();
-  let tommorow = formatDate(new Date(today.getDate() + 1));
+  let date = new Date();
+  date.setDate(date.getDate() + 1);
+  let tommorow = formatDate(date);
   for (let recruit in _recruits) {
     let data = _recruits[recruit];
     let openRecruit = data["isClose"] == false && data["date"] == tommorow;
