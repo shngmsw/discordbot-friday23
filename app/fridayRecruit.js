@@ -95,7 +95,7 @@ async function addReaction(msg, userId) {
       members: membersList
     };
     newEmbed.setDescription(
-      `23:00～ 〆` + await getMemberMentions(_recruits[msg.id].members)
+      `23:00～ 〆` + getMemberMentions(_recruits[msg.id].members)
     );
     notificationChannel.send({
       content: `@everyone ${_recruits[msg.id].date}のプラベ、人数集まりましたので開催します！`
@@ -110,7 +110,7 @@ async function addReaction(msg, userId) {
       members: membersList
     };
     newEmbed.setDescription(
-      `23:00～ @${atNum}` + await getMemberMentions(_recruits[msg.id].members, msg)
+      `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members, msg)
     );
   }
 
@@ -139,7 +139,7 @@ async function removeReaction(msg, userId) {
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setDescription(
-    `23:00～ @${atNum}` + await getMemberMentions(_recruits[msg.id].members, msg)
+    `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members, msg)
   );
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
 
@@ -155,11 +155,11 @@ function formatDate(dt) {
   return y + "." + m + "." + d;
 }
 
-async function getMemberMentions(members, msg) {
+function getMemberMentions(members, msg) {
   let mentionString = "";
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
-    let memberObj = await msg.guild.members.cache.get(member);
+    let memberObj = msg.guild.members.cache.get(member);
     let name = memberObj.user.username;
     mentionString = mentionString + `\n${name}`;
   }
