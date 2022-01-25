@@ -94,7 +94,7 @@ async function addReaction(msg, userId) {
       isClose: true,
       members: membersList
     };
-    memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
+    memberMentions = getMemberMentions(_recruits[msg.id].members);
     newEmbed.setDescription(
       `23:00～ 〆`
     );
@@ -110,7 +110,7 @@ async function addReaction(msg, userId) {
       isClose: false,
       members: membersList
     };
-    memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
+    memberMentions = getMemberMentions(_recruits[msg.id].members);
     newEmbed.setDescription(`23:00～ @${atNum}`)
   }
 
@@ -119,7 +119,7 @@ async function addReaction(msg, userId) {
   msg.edit({ content: memberMentions, embeds: [newEmbed] }).catch(console.error);
 }
 
-async function removeReaction(msg, userId) {
+function removeReaction(msg, userId) {
   let rawdata = fs.readFileSync(JSON_PATH);
   let _recruits = JSON.parse(rawdata);
   if (_recruits[msg.id] == undefined) return;
@@ -136,7 +136,7 @@ async function removeReaction(msg, userId) {
   };
 
   let memberMentions = '【メンバー一覧】';
-  memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
+  memberMentions = getMemberMentions(_recruits[msg.id].members);
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
@@ -157,7 +157,7 @@ function formatDate(dt) {
   return y + "." + m + "." + d;
 }
 
-function getMemberMentions(members, msg) {
+function getMemberMentions(members) {
   let mentionString = "【メンバー一覧】";
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
