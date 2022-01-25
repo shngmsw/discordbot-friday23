@@ -83,19 +83,18 @@ async function addReaction(msg, userId) {
   let notificationChannel = msg.guild.channels.cache.find(
     channel => channel.id === process.env.CHANNEL_ID_NOTIFICATION
   );
+  let memberMentions = '';
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
-  let memberMentions = '';
-  memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
-
   if (membersList.length == RECRUIT_NUM) {
     _recruits[msg.id] = {
       date: _recruits[msg.id].date,
       isClose: true,
       members: membersList
     };
+    memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
     newEmbed.setDescription(
       `23:00～ 〆`
     );
@@ -111,6 +110,7 @@ async function addReaction(msg, userId) {
       isClose: false,
       members: membersList
     };
+    memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
     newEmbed.setDescription(`23:00～ @${atNum}`)
   }
 
