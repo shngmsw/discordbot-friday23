@@ -83,19 +83,20 @@ async function addReaction(msg, userId) {
   let notificationChannel = msg.guild.channels.cache.find(
     channel => channel.id === process.env.CHANNEL_ID_NOTIFICATION
   );
+  let memberMentions = '';
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
-
   if (membersList.length == RECRUIT_NUM) {
     _recruits[msg.id] = {
       date: _recruits[msg.id].date,
       isClose: true,
       members: membersList
     };
+    memberMentions = getMemberMentions(_recruits[msg.id].members);
     newEmbed.setDescription(
-      `23:00～ 〆` + getMemberMentions(_recruits[msg.id].members)
+      `23:00～ 〆`
     );
     notificationChannel.send({
       content: `@everyone ${_recruits[msg.id].date}のプラベ、人数集まりましたので開催します！`
@@ -109,14 +110,13 @@ async function addReaction(msg, userId) {
       isClose: false,
       members: membersList
     };
-    newEmbed.setDescription(
-      `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members)
-    );
+    memberMentions = getMemberMentions(_recruits[msg.id].members);
+    newEmbed.setDescription(`23:00～ @${atNum}`)
   }
 
   let data = JSON.stringify(_recruits, null, 2);
   fs.writeFileSync(JSON_PATH, data);
-  msg.edit({ embeds: [newEmbed] }).catch(console.error);
+  msg.edit({ content: memberMentions, embeds: [newEmbed] }).catch(console.error);
 }
 
 function removeReaction(msg, userId) {
@@ -135,17 +135,19 @@ function removeReaction(msg, userId) {
     members: membersList
   };
 
+  let memberMentions = '【メンバー一覧】';
+  memberMentions = getMemberMentions(_recruits[msg.id].members);
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setDescription(
-    `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members)
+    `23:00～ @${atNum}`
   );
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
 
   let data = JSON.stringify(_recruits, null, 2);
   fs.writeFileSync(JSON_PATH, data);
-  msg.edit({ embeds: [newEmbed] }).catch(console.error);
+  msg.edit({ content: memberMentions, embeds: [newEmbed] }).catch(console.error);
 }
 
 function formatDate(dt) {
