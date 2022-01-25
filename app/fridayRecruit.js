@@ -110,7 +110,7 @@ async function addReaction(msg, userId) {
       members: membersList
     };
     newEmbed.setDescription(
-      `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members)
+      `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members, msg)
     );
   }
 
@@ -139,7 +139,7 @@ function removeReaction(msg, userId) {
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setDescription(
-    `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members)
+    `23:00～ @${atNum}` + getMemberMentions(_recruits[msg.id].members, msg)
   );
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
 
@@ -155,11 +155,15 @@ function formatDate(dt) {
   return y + "." + m + "." + d;
 }
 
-function getMemberMentions(members) {
+function getMemberMentions(members, msg) {
   let mentionString = "";
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
-    mentionString = mentionString + `\n<@${member}> `;
+    let memberObj = msg.guild.members.cache.find(
+      m => m.id === member
+    );
+    let name = memberObj.nickname ?? memberObj.user.username;
+    mentionString = mentionString + `\n${name}`;
   }
   return mentionString;
 }
