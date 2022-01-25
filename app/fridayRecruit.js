@@ -88,7 +88,7 @@ async function addReaction(msg, userId) {
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
   let memberMentions = '';
-  memberMentions = await getMemberMentions(_recruits[msg.id].members, msg);
+  memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
 
   if (membersList.length == RECRUIT_NUM) {
     _recruits[msg.id] = {
@@ -97,7 +97,7 @@ async function addReaction(msg, userId) {
       members: membersList
     };
     newEmbed.setDescription(
-      `23:00～ 〆` + memberMentions
+      `23:00～ 〆`
     );
     notificationChannel.send({
       content: `@everyone ${_recruits[msg.id].date}のプラベ、人数集まりましたので開催します！`
@@ -111,12 +111,12 @@ async function addReaction(msg, userId) {
       isClose: false,
       members: membersList
     };
-    newEmbed.setDescription(`23:00～ @${atNum}` + memberMentions)
+    newEmbed.setDescription(`23:00～ @${atNum}`)
   }
 
   let data = JSON.stringify(_recruits, null, 2);
   fs.writeFileSync(JSON_PATH, data);
-  msg.edit({ embeds: [newEmbed] }).catch(console.error);
+  msg.edit({ content: memberMentions, embeds: [newEmbed] }).catch(console.error);
 }
 
 async function removeReaction(msg, userId) {
@@ -124,8 +124,6 @@ async function removeReaction(msg, userId) {
   let _recruits = JSON.parse(rawdata);
   if (_recruits[msg.id] == undefined) return;
   let membersList = _recruits[msg.id].members;
-  let memberMentions = '';
-  memberMentions = await getMemberMentions(membersList, msg);
 
   let idx = membersList.indexOf(userId);
   if (idx >= 0) {
@@ -137,17 +135,19 @@ async function removeReaction(msg, userId) {
     members: membersList
   };
 
+  let memberMentions = '【メンバー一覧】';
+  memberMentions = getMemberMentions(_recruits[msg.id].members, msg);
   let atNum = RECRUIT_NUM - membersList.length;
   const receivedEmbed = msg.embeds[0];
   let newEmbed = new MessageEmbed(receivedEmbed);
   newEmbed.setDescription(
-    `23:00～ @${atNum}` + memberMentions
+    `23:00～ @${atNum}`
   );
   newEmbed.setTitle(_recruits[msg.id].date).setColor(0xffdd00);
 
   let data = JSON.stringify(_recruits, null, 2);
   fs.writeFileSync(JSON_PATH, data);
-  msg.edit({ embeds: [newEmbed] }).catch(console.error);
+  msg.edit({ content: memberMentions, embeds: [newEmbed] }).catch(console.error);
 }
 
 function formatDate(dt) {
@@ -157,13 +157,11 @@ function formatDate(dt) {
   return y + "." + m + "." + d;
 }
 
-async function getMemberMentions(members, msg) {
-  let mentionString = "";
+function getMemberMentions(members, msg) {
+  let mentionString = "【メンバー一覧】";
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
-    let memberObj = await msg.guild.members.fetch(member)
-    let name = memberObj.user.username;
-    mentionString = mentionString + `\n${name}`;
+    mentionString = mentionString + `\n<@${member}> `;
   }
   return mentionString;
 }
