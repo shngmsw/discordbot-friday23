@@ -162,7 +162,7 @@ function getMemberMentions(members, msg) {
     let memberObj = msg.guild.members.cache.find(
       m => m.id === member
     );
-    let name = memberObj.nickname ?? memberObj.user.username;
+    let name = memberObj.user.username;
     mentionString = mentionString + `\n${name}`;
   }
   return mentionString;
