@@ -159,9 +159,7 @@ function getMemberMentions(members, msg) {
   let mentionString = "";
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
-    let memberObj = msg.guild.members.cache.find(
-      m => m.id === member
-    );
+    let memberObj = msg.guild.members.cache.get(member);
     let name = memberObj.user.username;
     mentionString = mentionString + `\n${name}`;
   }
