@@ -51,10 +51,13 @@ function checkResult(msg) {
   let _recruits = JSON.parse(rawdata);
   let date = new Date();
   date.setDate(date.getDate() + 1);
-  let tommorow = formatDate(date);
+  let tomorrow = formatDate(date);
+  date = new Date();
+  date.setDate(date.getDate());
+  let today = formatDate(date);
   for (let recruit in _recruits) {
     let data = _recruits[recruit];
-    let openRecruit = data["isClose"] == false && data["date"] == tommorow;
+    let openRecruit = data["isClose"] == false && (data["date"] == tomorrow || data["date"] == today);
 
     let notificationChannel = msg.guild.channels.cache.find(
       channel => channel.id === process.env.CHANNEL_ID_NOTIFICATION
