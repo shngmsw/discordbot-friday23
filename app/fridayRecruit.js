@@ -41,6 +41,7 @@ function createRecruit(msg) {
       let data = JSON.stringify(_recruits, null, 2);
       fs.writeFileSync(JSON_PATH, data);
       m.react("✅");
+      m.react("❎");
     });
   }
   msg.delete();
